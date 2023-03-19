@@ -173,7 +173,8 @@ def get_text_pc(i, j, game_board, player1, player2):
 def withpc(game_board):
 	game_board.destroy()
 	game_board = Tk()
-	game_board.title("Tic Tac Toe")
+	
+	game_board.title("Py-Retro: Tic Tac Toe")
 	player1 = Button(game_board, text="Player : X", width=10)
 	player1.grid(row=1, column=1)
 	player2 = Button(game_board, text="Computer : O",
@@ -187,7 +188,7 @@ def withpc(game_board):
 def withplayer(game_board):
 	game_board.destroy()
 	game_board = Tk()
-	game_board.title("Tic Tac Toe")
+	game_board.title("Py-Retro: Tic Tac Toe")
 	player1 = Button(game_board, text="Player 1 : X", width=10)
 
 	player1.grid(row=1, column=1)
@@ -202,14 +203,10 @@ def withplayer(game_board):
 def start_game():
 	menu = Tk()
 	menu.geometry("250x250")
-	menu.title("Tic Tac Toe")
+	menu.title("Py-Retro: Tic Tac Toe")
 	wpc = partial(withpc, menu)
 	wpl = partial(withplayer, menu)
 
-	head = Button(menu, text="---Welcome to tic-tac-toe---",
-				activeforeground='red',
-				activebackground="yellow", bg="red",
-				fg="yellow", width=500, font='summer', bd=5)
 
 	button1 = Button(menu, text="Single Player", command=wpc,
 				activeforeground='red',
@@ -223,7 +220,7 @@ def start_game():
 	button3 = Button(menu, text="Exit", command=menu.quit, activeforeground='red',
 				activebackground="yellow", bg="red", fg="yellow",
 				width=500, font='summer', bd=5)
-	head.pack(side='top')
+
 	button1.pack(side='top')
 	button2.pack(side='top')
 	button3.pack(side='top')

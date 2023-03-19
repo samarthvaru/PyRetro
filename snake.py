@@ -16,7 +16,7 @@ speed=15
 
 # Creating a window screen
 window = turtle.Screen()
-window.title("Snake Game")
+window.title("Py-Retro: Snake Game")
 
 # background color of the window
 window.bgcolor("blue")
