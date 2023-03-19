@@ -12,10 +12,14 @@ window_height = 499
 window = pygame.display.set_mode((window_width, window_height))
 elevation = window_height * 0.9
 game_images = {}
+
+#setting fps
 framepersecond = 50
+
+# setting paths of images
 pipeimage = 'images/pipe.jpg'
 background_image = 'images/background.jpg'
-birdplayer_image = 'images/player-remove.png'
+superhuman_image = 'images/player-remove.png'
 sealevel_image = 'images/base.jfif'
 
 
@@ -49,14 +53,14 @@ def flappygame():
 	# pipe velocity along x
 	pipeVelX = -4
 
-	# bird velocity
-	bird_velocity_y = -9
-	bird_Max_Vel_Y = 10
-	bird_Min_Vel_Y = -8
-	birdAccY = 1
-
-	bird_flap_velocity = -8
-	bird_flapped = False
+	# superhuman velocity
+	superhuman_velocity_y = -9
+	superhuman_Max_Vel_Y = 10
+	superhuman_Min_Vel_Y = -8
+	superhumanAccY = 1
+	superhuman_flap_velocity = -8
+	
+	superhuman_flapped = False
 	while True:
 		for event in pygame.event.get():
 			if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
@@ -64,11 +68,11 @@ def flappygame():
 				sys.exit()
 			if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
 				if vertical > 0:
-					bird_velocity_y = bird_flap_velocity
-					bird_flapped = True
+					superhuman_velocity_y = superhuman_flap_velocity
+					superhuman_flapped = True
 
 		# This function will return true
-		# if the flappybird is crashed
+		# if the superhuman is crashed
 		game_over = isGameOver(horizontal,
 							vertical,
 							up_pipes,
@@ -77,21 +81,21 @@ def flappygame():
 			return
 
 		# check for your_score
-		playerMidPos = horizontal + game_images['flappybird'].get_width()/2
+		playerMidPos = horizontal + game_images['superhuman'].get_width()/2
 		for pipe in up_pipes:
 			pipeMidPos = pipe['x'] + game_images['pipeimage'][0].get_width()/2
 			if pipeMidPos <= playerMidPos < pipeMidPos + 4:
 				your_score += 1
 				print(f"Your your_score is {your_score}")
 
-		if bird_velocity_y < bird_Max_Vel_Y and not bird_flapped:
-			bird_velocity_y += birdAccY
+		if superhuman_velocity_y < superhuman_Max_Vel_Y and not superhuman_flapped:
+			superhuman_velocity_y += superhumanAccY
 
-		if bird_flapped:
-			bird_flapped = False
-		playerHeight = game_images['flappybird'].get_height()
+		if superhuman_flapped:
+			superhuman_flapped = False
+		playerHeight = game_images['superhuman'].get_height()
 		vertical = vertical + \
-			min(bird_velocity_y, elevation - vertical - playerHeight)
+			min(superhuman_velocity_y, elevation - vertical - playerHeight)
 
 		# move pipes to the left
 		for upperPipe, lowerPipe in zip(up_pipes, down_pipes):
@@ -119,7 +123,7 @@ def flappygame():
 						(lowerPipe['x'], lowerPipe['y']))
 
 		window.blit(game_images['sea_level'], (ground, elevation))
-		window.blit(game_images['flappybird'], (horizontal, vertical))
+		window.blit(game_images['superhuman'], (horizontal, vertical))
 
 		# Fetching the digits of score.
 		numbers = [int(x) for x in list(str(your_score))]
@@ -152,7 +156,7 @@ def isGameOver(horizontal, vertical, up_pipes, down_pipes):
 			return True
 
 	for pipe in down_pipes:
-		if (vertical + game_images['flappybird'].get_height() > pipe['y']) and\
+		if (vertical + game_images['superhuman'].get_height() > pipe['y']) and\
 		abs(horizontal - pipe['x']) < game_images['pipeimage'][0].get_width():
 			return True
 	return False
@@ -201,8 +205,8 @@ if __name__ == "__main__":
 		pygame.image.load('images/8.png').convert_alpha(),
 		pygame.image.load('images/9.png').convert_alpha()
 	)
-	game_images['flappybird'] = pygame.image.load(
-		birdplayer_image).convert_alpha()
+	game_images['superhuman'] = pygame.image.load(
+		superhuman_image).convert_alpha()
 	game_images['sea_level'] = pygame.image.load(
 		sealevel_image).convert_alpha()
 	game_images['background'] = pygame.image.load(
@@ -218,11 +222,11 @@ if __name__ == "__main__":
 
 	while True:
 
-		# sets the coordinates of flappy bird
+		# sets the coordinates of flappy superhuman
 
 		horizontal = int(window_width/5)
 		vertical = int(
-			(window_height - game_images['flappybird'].get_height())/2)
+			(window_height - game_images['superhuman'].get_height())/2)
 		ground = 0
 		while True:
 			for event in pygame.event.get():
@@ -242,7 +246,7 @@ if __name__ == "__main__":
 				# if user doesn't press anykey Nothing happen
 				else:
 					window.blit(game_images['background'], (0, 0))
-					window.blit(game_images['flappybird'],
+					window.blit(game_images['superhuman'],
 								(horizontal, vertical))
 					window.blit(game_images['sea_level'], (ground, elevation))
 					pygame.display.update()

@@ -14,15 +14,15 @@ global board
 board = [[" " for x in range(3)] for y in range(3)]
 
 # checking the winner 
-def winner(b, l):
-	return ((b[0][0] == l and b[0][1] == l and b[0][2] == l) or
-			(b[1][0] == l and b[1][1] == l and b[1][2] == l) or
-			(b[2][0] == l and b[2][1] == l and b[2][2] == l) or
-			(b[0][0] == l and b[1][0] == l and b[2][0] == l) or
-			(b[0][1] == l and b[1][1] == l and b[2][1] == l) or
-			(b[0][2] == l and b[1][2] == l and b[2][2] == l) or
-			(b[0][0] == l and b[1][1] == l and b[2][2] == l) or
-			(b[0][2] == l and b[1][1] == l and b[2][0] == l))
+def winner(board, player):
+	return ((board[0][0] == player and board[0][1] == player and board[0][2] == player) or
+			(board[1][0] == player and board[1][1] == player and board[1][2] == player) or
+			(board[2][0] == player and board[2][1] == player and board[2][2] == player) or
+			(board[0][0] == player and board[1][0] == player and board[2][0] == player) or
+			(board[0][1] == player and board[1][1] == player and board[2][1] == player) or
+			(board[0][2] == player and board[1][2] == player and board[2][2] == player) or
+			(board[0][0] == player and board[1][1] == player and board[2][2] == player) or
+			(board[0][2] == player and board[1][1] == player and board[2][0] == player))
 
 
 # configuring text on button while playing with another player

@@ -17,7 +17,7 @@ COLUMN_COUNT = 7
  
 #create a board for the connect four game
 def create_board_for_game():
-    board = np.zeros((ROW_COUNT,COLUMN_COUNT))
+    board = np.zeros((ROW_COUNT, COLUMN_COUNT))
     return board
  
 #drop piece down in the board
@@ -114,7 +114,7 @@ def reset():
     draw_board_for_the_game(board)
     pygame.display.update()
     
-    myfont = pygame.font.SysFont("monospace", 75)
+    myfont = pygame.font.SysFont("Comic Sans MS", 75)
     
     while not game_over:
         for event in pygame.event.get():
@@ -191,7 +191,7 @@ screen = pygame.display.set_mode(size)
 draw_board_for_the_game(board)
 pygame.display.update()
  
-myfont = pygame.font.SysFont("monospace", 75)
+myfont = pygame.font.SysFont("Comic Sans MS", 75)
 
 
  

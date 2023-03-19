@@ -45,15 +45,15 @@ food.color(food_colors)
 food.penup()
 food.goto(0, 100)
 
-# creating and configuring the pen for score
-pen = turtle.Turtle()
-pen.speed(0)
-pen.shape("square")
-pen.color("white")
-pen.penup()
-pen.hideturtle()
-pen.goto(0, 250)
-pen.write("Score : 0 High Score : 0", align="center", font=("candara", 24, "bold"))
+# creating and configuring the scr_wrtr for score
+scr_wrtr = turtle.Turtle()
+scr_wrtr.speed(0)
+scr_wrtr.shape("square")
+scr_wrtr.color("white")
+scr_wrtr.penup()
+scr_wrtr.hideturtle()
+scr_wrtr.goto(0, 250)
+scr_wrtr.write("Score : 0 High Score : 0", align="center", font=("Comic Sans MS", 24, "bold"))
 
 
 # assigning upward movement for snake
@@ -120,8 +120,8 @@ while True:
 	
     # restarting the game if the snake has touches the boundary
 	if snake_head.xcor() > 290 or snake_head.xcor() < -290 or snake_head.ycor() > 290 or snake_head.ycor() < -290:
-		pen.clear()
-		pen.write("Game Over", align="center", font=("candara", 24, "bold"))
+		scr_wrtr.clear()
+		scr_wrtr.write("Game Over", align="center", font=("Comic Sans MS", 24, "bold"))
 		time.sleep(1)		
 		snake_head.goto(0, 0)
 		snake_head.direction = "Stop"
@@ -132,9 +132,9 @@ while True:
 		segments.clear()
 		score = 0
 		delay = 0.1
-		pen.clear()
-		pen.write("Score : {} High Score : {} ".format(
-			score, high_score), align="center", font=("candara", 24, "bold"))
+		scr_wrtr.clear()
+		scr_wrtr.write("Score : {} High Score : {} ".format(
+			score, high_score), align="center", font=("Comic Sans MS", 24, "bold"))
 		
     # randomizing the position of food if eaten by the snake
 	if snake_head.distance(food) < speed:
@@ -153,9 +153,9 @@ while True:
 		score += 10
 		if score > high_score:
 			high_score = score
-		pen.clear()
-		pen.write("Score : {} High Score : {} ".format(
-			score, high_score), align="center", font=("candara", 24, "bold"))
+		scr_wrtr.clear()
+		scr_wrtr.write("Score : {} High Score : {} ".format(
+			score, high_score), align="center", font=("Comic Sans MS", 24, "bold"))
 		
 	# Checking for head collisions with body segments
 	for index in range(len(segments)-1, 0, -1):
@@ -169,8 +169,8 @@ while True:
 	move()
 	for segment in segments:
 		if segment.distance(snake_head) < speed:
-			pen.clear()
-			pen.write("Game Over", align="center", font=("candara", 24, "bold"))
+			scr_wrtr.clear()
+			scr_wrtr.write("Game Over", align="center", font=("Comic Sans MS", 24, "bold"))
 			time.sleep(1)
 			snake_head.goto(0, 0)
 			snake_head.direction = "stop"
@@ -182,9 +182,9 @@ while True:
 
 			score = 0
 			delay = 0.1
-			pen.clear()
-			pen.write("Score : {} High Score : {} ".format(
-				score, high_score), align="center", font=("candara", 24, "bold"))
+			scr_wrtr.clear()
+			scr_wrtr.write("Score : {} High Score : {} ".format(
+				score, high_score), align="center", font=("Comic Sans MS", 24, "bold"))
 	time.sleep(delay)
 
 window.mainloop()
