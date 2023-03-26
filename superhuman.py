@@ -1,57 +1,58 @@
-# Import module
+# import modules
 import random
 import sys
 import pygame
 from pygame.locals import *
 
-# All the Game Variables
-window_width = 600
-window_height = 499
+# defining height and width of game window
+game_window_width = 600
+game_window_height = 499
 
 # set height and width of window
-window = pygame.display.set_mode((window_width, window_height))
-elevation = window_height * 0.9
+window = pygame.display.set_mode((game_window_width, game_window_height))
+elevation = game_window_height * 0.9
 game_images = {}
 
-#setting fps
-framepersecond = 50
+# setting fps
+frame_per_second = 50
 
 # setting paths of images
-pipeimage = 'images/pipe.jpg'
+wall_image = 'images/wall.jpg'
 background_image = 'images/background.jpg'
 superhuman_image = 'images/player-remove.png'
 sealevel_image = 'images/base.jfif'
 
 
-def flappygame():
-	your_score = 0
-	horizontal = int(window_width/5)
-	vertical = int(window_width/2)
+def superhuman():
+	# defining variables
+	player_score = 0
+	horizontal = int(game_window_width/5)
+	vertical = int(game_window_width/2)
 	ground = 0
-	mytempheight = 100
+	my_temp_height = 100
 
-	# Generating two pipes for blitting on window
-	first_pipe = createPipe()
-	second_pipe = createPipe()
+	# generating two walls for blitting on window
+	first_wall = create_wall()
+	second_wall = create_wall()
 
-	# List containing lower pipes
-	down_pipes = [
-		{'x': window_width+300-mytempheight,
-		'y': first_pipe[1]['y']},
-		{'x': window_width+300-mytempheight+(window_width/2),
-		'y': second_pipe[1]['y']},
+	# Llst of lower walls
+	down_walls = [
+		{'x': game_window_width+300-my_temp_height,
+		'y': first_wall[1]['y']},
+		{'x': game_window_width+300-my_temp_height+(game_window_width/2),
+		'y': second_wall[1]['y']},
 	]
 
-	# List Containing upper pipes
-	up_pipes = [
-		{'x': window_width+300-mytempheight,
-		'y': first_pipe[0]['y']},
-		{'x': window_width+200-mytempheight+(window_width/2),
-		'y': second_pipe[0]['y']},
+	# list of upper walls
+	up_walls = [
+		{'x': game_window_width+300-my_temp_height,
+		'y': first_wall[0]['y']},
+		{'x': game_window_width+200-my_temp_height+(game_window_width/2),
+		'y': second_wall[0]['y']},
 	]
 
-	# pipe velocity along x
-	pipeVelX = -4
+	# wall velocity along x axis
+	wall_vel_x = -4
 
 	# superhuman velocity
 	superhuman_velocity_y = -9
@@ -61,6 +62,7 @@ def flappygame():
 	superhuman_flap_velocity = -8
 	
 	superhuman_flapped = False
+
 	while True:
 		for event in pygame.event.get():
 			if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
@@ -71,22 +73,21 @@ def flappygame():
 					superhuman_velocity_y = superhuman_flap_velocity
 					superhuman_flapped = True
 
-		# This function will return true
-		# if the superhuman is crashed
-		game_over = isGameOver(horizontal,
+		# function to check if superhuman crashes onto a wall
+		is_game_over = isGameOver(horizontal,
 							vertical,
-							up_pipes,
-							down_pipes)
-		if game_over:
+							up_walls,
+							down_walls)
+		if is_game_over:
 			return
 
-		# check for your_score
+		# checking player's score
 		playerMidPos = horizontal + game_images['superhuman'].get_width()/2
-		for pipe in up_pipes:
-			pipeMidPos = pipe['x'] + game_images['pipeimage'][0].get_width()/2
-			if pipeMidPos <= playerMidPos < pipeMidPos + 4:
-				your_score += 1
-				print(f"Your your_score is {your_score}")
+		for wall in up_walls:
+			wallMidPos = wall['x'] + game_images['wall_image'][0].get_width()/2
+			if wallMidPos <= playerMidPos < wallMidPos + 4:
+				player_score += 1
+				print(f"Your score is {player_score}")
 
 		if superhuman_velocity_y < superhuman_Max_Vel_Y and not superhuman_flapped:
 			superhuman_velocity_y += superhumanAccY
@@ -97,100 +98,99 @@ def flappygame():
 		vertical = vertical + \
 			min(superhuman_velocity_y, elevation - vertical - playerHeight)
 
-		# move pipes to the left
-		for upperPipe, lowerPipe in zip(up_pipes, down_pipes):
-			upperPipe['x'] += pipeVelX
-			lowerPipe['x'] += pipeVelX
+		# moving walls
+		for upper_wall, lower_wall in zip(up_walls, down_walls):
+			upper_wall['x'] += wall_vel_x
+			lower_wall['x'] += wall_vel_x
 
-		# Add a new pipe when the first is
-		# about to cross the leftmost part of the screen
-		if 0 < up_pipes[0]['x'] < 5:
-			newpipe = createPipe()
-			up_pipes.append(newpipe[0])
-			down_pipes.append(newpipe[1])
+		# adding a new wall to the right when leftmost wall disappears
+		if 0 < up_walls[0]['x'] < 5:
+			newwall = create_wall()
+			up_walls.append(newwall[0])
+			down_walls.append(newwall[1])
 
-		# if the pipe is out of the screen, remove it
-		if up_pipes[0]['x'] < -game_images['pipeimage'][0].get_width():
-			up_pipes.pop(0)
-			down_pipes.pop(0)
+		# deleting a wall when not on screen
+		if up_walls[0]['x'] < -game_images['wall_image'][0].get_width():
+			up_walls.pop(0)
+			down_walls.pop(0)
 
-		# Lets blit our game images now
+		# loading game images
 		window.blit(game_images['background'], (0, 0))
-		for upperPipe, lowerPipe in zip(up_pipes, down_pipes):
-			window.blit(game_images['pipeimage'][0],
-						(upperPipe['x'], upperPipe['y']))
-			window.blit(game_images['pipeimage'][1],
-						(lowerPipe['x'], lowerPipe['y']))
+		for upper_wall, lower_wall in zip(up_walls, down_walls):
+			window.blit(game_images['wall_image'][0],
+						(upper_wall['x'], upper_wall['y']))
+			window.blit(game_images['wall_image'][1],
+						(lower_wall['x'], lower_wall['y']))
 
 		window.blit(game_images['sea_level'], (ground, elevation))
 		window.blit(game_images['superhuman'], (horizontal, vertical))
 
-		# Fetching the digits of score.
-		numbers = [int(x) for x in list(str(your_score))]
+		# loading score images
+		numbers = [int(x) for x in list(str(player_score))]
 		width = 0
 
-		# finding the width of score images from numbers.
+		# finding the width of score images from numbers
 		for num in numbers:
 			width += game_images['scoreimages'][num].get_width()
-		Xoffset = (window_width - width)/1.1
+		Xoffset = (game_window_width - width)/1.1
 
-		# Blitting the images on the window.
+		# ading images to the game window
 		for num in numbers:
 			window.blit(game_images['scoreimages'][num],
-						(Xoffset, window_width*0.02))
+						(Xoffset, game_window_width*0.02))
 			Xoffset += game_images['scoreimages'][num].get_width()
 
 		# Refreshing the game window and displaying the score.
 		pygame.display.update()
-		framepersecond_clock.tick(framepersecond)
+		framepersecond_clock.tick(frame_per_second)
 
 
-def isGameOver(horizontal, vertical, up_pipes, down_pipes):
+def isGameOver(horizontal, vertical, up_walls, down_walls):
 	if vertical > elevation - 25 or vertical < 0:
 		return True
 
-	for pipe in up_pipes:
-		pipeHeight = game_images['pipeimage'][0].get_height()
-		if(vertical < pipeHeight + pipe['y'] and\
-		abs(horizontal - pipe['x']) < game_images['pipeimage'][0].get_width()):
+	for wall in up_walls:
+		wall_height = game_images['wall_image'][0].get_height()
+		if(vertical < wall_height + wall['y'] and\
+		abs(horizontal - wall['x']) < game_images['wall_image'][0].get_width()):
 			return True
 
-	for pipe in down_pipes:
-		if (vertical + game_images['superhuman'].get_height() > pipe['y']) and\
-		abs(horizontal - pipe['x']) < game_images['pipeimage'][0].get_width():
+	for wall in down_walls:
+		if (vertical + game_images['superhuman'].get_height() > wall['y']) and\
+		abs(horizontal - wall['x']) < game_images['wall_image'][0].get_width():
 			return True
 	return False
 
 
-def createPipe():
-	offset = window_height/3
-	pipeHeight = game_images['pipeimage'][0].get_height()
+def create_wall():
+	offset = game_window_height/3
+	wall_height = game_images['wall_image'][0].get_height()
 	y2 = offset + \
 		random.randrange(
-			0, int(window_height - game_images['sea_level'].get_height() - 1.2 * offset))
-	pipeX = window_width + 10
-	y1 = pipeHeight - y2 + offset
-	pipe = [
-		# upper Pipe
-		{'x': pipeX, 'y': -y1},
+			0, int(game_window_height - game_images['sea_level'].get_height() - 1.2 * offset))
+	wallX = game_window_width + 10
+	y1 = wall_height - y2 + offset
+	wall = [
+		# upper wall
+		{'x': wallX, 'y': -y1},
 
-		# lower Pipe
-		{'x': pipeX, 'y': y2}
+		# lower wall
+		{'x': wallX, 'y': y2}
 	]
-	return pipe
+	return wall
 
 
-# program where the game starts
+# main function
 if __name__ == "__main__":
 
-		# For initializing modules of pygame library
+	# initializing modules of pygame library
 	pygame.init()
 	framepersecond_clock = pygame.time.Clock()
 
-	# Sets the title on top of game window
-	pygame.display.set_caption('Py-Retro: Flappy Bird')
+	# setting the title on top of game window
+	pygame.display.set_caption('Py-Retro: Super Human')
 
-	# Load all the images which we will use in the game
+	# loading all the images which we will use in the game
 
 	# images for displaying score
 	game_images['scoreimages'] = (
@@ -211,22 +211,20 @@ if __name__ == "__main__":
 		sealevel_image).convert_alpha()
 	game_images['background'] = pygame.image.load(
 		background_image).convert_alpha()
-	game_images['pipeimage'] = (pygame.transform.rotate(pygame.image.load(
-		pipeimage).convert_alpha(), 180), pygame.image.load(
-	pipeimage).convert_alpha())
+	game_images['wall_image'] = (pygame.transform.rotate(pygame.image.load(
+		wall_image).convert_alpha(), 180), pygame.image.load(
+	wall_image).convert_alpha())
 
-	print("WELCOME TO THE Py-Retro: Flappy Bird")
+	print("WELCOME TO THE Py-Retro: Super Human")
 	print("Press space or enter to start the game")
-
-	# Here starts the main game
 
 	while True:
 
-		# sets the coordinates of flappy superhuman
+		# setting the coordinates of superhuman
 
-		horizontal = int(window_width/5)
+		horizontal = int(game_window_width/5)
 		vertical = int(
-			(window_height - game_images['superhuman'].get_height())/2)
+			(game_window_height - game_images['superhuman'].get_height())/2)
 		ground = 0
 		while True:
 			for event in pygame.event.get():
@@ -237,17 +235,16 @@ if __name__ == "__main__":
 					pygame.quit()
 					sys.exit()
 
-				# If the user presses space or
-				# up key, start the game for them
+				# game starts when user presses space key or up arrow
 				elif event.type == KEYDOWN and (event.key == K_SPACE or\
 												event.key == K_UP):
-					flappygame()
+					superhuman()
 
-				# if user doesn't press anykey Nothing happen
+				# nothing happens if the user doesn't press any key
 				else:
 					window.blit(game_images['background'], (0, 0))
 					window.blit(game_images['superhuman'],
 								(horizontal, vertical))
 					window.blit(game_images['sea_level'], (ground, elevation))
 					pygame.display.update()
-					framepersecond_clock.tick(framepersecond)
+					framepersecond_clock.tick(frame_per_second)
