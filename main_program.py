@@ -30,6 +30,6 @@ btn3 = Button(window, text="SuperHuman", bg="black", fg="white",command=run_supe
 btn3.grid(column=0, row=4)
 btn4 = Button(window, text="Tetris", bg="black", fg="white",command=run_tetris)
 btn4.grid(column=0, row=6)
-btn5 = Button(window, text="Tictactoe", bg="black", fg="white",command=run_tictactoe)
+btn5 = Button(window, text="Tic Tac Toe", bg="black", fg="white",command=run_tictactoe)
 btn5.grid(column=0, row=8)
 window.mainloop()
