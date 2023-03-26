@@ -22,7 +22,6 @@ screen_height = window.winfo_screenheight() # Height of the screen
 x = (screen_width/2) - (width/2)
 y = (screen_height/2) - (height/2)
 
-
 window.title("Py-Retro")
 window.geometry('%dx%d+%d+%d' % (width, height, x, y))
 
@@ -50,32 +49,53 @@ def display_text():
    btn_inp.after(1, btn_inp.destroy)
    entry.after(1,entry.destroy)
 
+button_image = PhotoImage(file="images/Tic Tac Toe.png")
+
+
+# create a frame to contain the buttons
+button_frame = Frame(window)
+button_frame.pack()
+button_frame.image = button_image
+
 #Initialize a Label to display the User Input
-label=Label(window, text="", font=("Courier 22 bold"))
-label.grid(column=1, row=0)
+label=Label(button_frame, text="", font=("Courier 22 bold"))
+# label.grid(column=1, row=0)
+label.place(relx = 0.5,
+                   rely = 0.5,
+                   anchor = 'center')
 # label.pack()
 
 #Create an Entry widget to accept User Input
-entry= Entry(window, width= 40)
+entry= Entry(button_frame, width= 40, bd=0, highlightthickness=0)
 entry.focus_set()
-entry.grid(column=1, row=1)
+entry.pack()
 # entry.pack()
 
 #Create a Button to validate Entry Widget
-btn_inp=Button(window, text= "Okay",width= 20, command= display_text)
+btn_inp=Button(button_frame, text= "Okay",width= 20, command= display_text)
 # btn_label.grid(column=1, row=0)
-btn_inp.grid(column=1,row=2)
+btn_inp.pack()
 
 
 
-btn = Button(window, text="Snake Game", bg="black", fg="white",command=run_snake)
-btn.grid(column=0, row=4)
-btn2 = Button(window, text="Connect four", bg="black", fg="white",command=run_connect_four)
-btn2.grid(column=0, row=6)
-btn3 = Button(window, text="SuperHuman", bg="black", fg="white",command=run_superhuman)
-btn3.grid(column=0, row=8)
-btn4 = Button(window, text="Tetris", bg="black", fg="white",command=run_tetris)
-btn4.grid(column=0, row=10)
-btn5 = Button(window, text="Tictactoe", bg="black", fg="white",command=run_tictactoe)
-btn5.grid(column=0, row=12)
+# create 5 buttons in the frame
+button1 = Button(button_frame,text="Snake Game", bd=0, fg="white",font=("Helvetica", 20),command=run_snake,width=20, height=1,highlightthickness=0)
+button1.pack(padx=10, pady=10)
+
+button2 = Button(button_frame, text="Connect four",bd=0, fg="white",font=("Helvetica", 20),command=run_connect_four,width=20, height=1,highlightthickness=0, highlightbackground="white")
+button2.pack(padx=10, pady=10)
+
+button3 = Button(button_frame, text="SuperHuman",bd=0, fg="white",font=("Helvetica", 20),command=run_superhuman,width=20, height=1,highlightthickness=0, highlightbackground="white")
+button3.pack(padx=10, pady=10)
+
+button4 = Button(button_frame, text="Tetris",bd=0, fg="white",font=("Helvetica", 20),command=run_tetris,width=20, height=1,highlightthickness=0, highlightbackground="white")
+button4.pack(padx=10, pady=10)
+
+button5 = Button(button_frame, text="Tictactoe",bd=0, image= button_image,fg="white",font=("Helvetica", 20),command=run_tictactoe,highlightthickness=0, highlightbackground="white")
+button5.pack(padx=10, pady=10)
+
+# center the frame containing the buttons
+button_frame.place(relx=0.5, rely=0.6, anchor="center")
+
+
 window.mainloop()
