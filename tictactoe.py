@@ -225,7 +225,16 @@ def withplayer(game_board):
 
 	game_board.destroy()
 	game_board = Tk()
+	screen_width = game_board.winfo_screenwidth()  # Width of the screen
+	screen_height = game_board.winfo_screenheight() # Height of the screen
+	
+	# Calculate Starting X and Y coordinates for Window
+	x = (screen_width/2) - (250)
+	y = (screen_height/2) - (250)
+	game_board.geometry('%dx%d+%d+%d' % (250, 250, x, y))
+	game_board.eval('tk::PlaceWindow . center')
 	game_board.title("Py-Retro: Tic Tac Toe")
+ 
 	player1 = Button(game_board, text="Player 1 : X", width=10)
 
 	player1.grid(row=1, column=1)
@@ -240,7 +249,13 @@ def withplayer(game_board):
 def start_game():
 
 	menu = Tk()
-	menu.geometry("250x250")
+	screen_width = menu.winfo_screenwidth()  # Width of the screen
+	screen_height = menu.winfo_screenheight() # Height of the screen
+	
+	# Calculate Starting X and Y coordinates for Window
+	x = (screen_width/2) - (250)
+	y = (screen_height/2) - (250)
+	menu.geometry('%dx%d+%d+%d' % (250, 250, x, y))
 	menu.title("Py-Retro: Tic Tac Toe")
 	wpc = partial(withpc, menu)
 	wpl = partial(withplayer, menu)
