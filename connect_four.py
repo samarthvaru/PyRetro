@@ -3,18 +3,22 @@ import pygame
 import sys
 import math
 
+
 # setting rgb values for colors
 blue = (0,0,255)
 black = (0,0,0)
 red = (255,0,0)
 yellow = (255,255,0)
+
  
 # setting row and column count
 count_of_row = 6
 count_of_column = 7
 
+
 # creating GUI
 def draw_gui(game_board):
+
     for c in range(count_of_column):
         for r in range(count_of_row):
             pygame.draw.rect(screen, blue, (c*square_size, r*square_size+square_size, square_size, square_size))
@@ -28,29 +32,35 @@ def draw_gui(game_board):
                 pygame.draw.circle(screen, yellow, (int(c*square_size+square_size/2), height-int(r*square_size+square_size/2)), radius)
     pygame.display.update()
  
+
 # creating a game board
 def create_board_for_game():
     game_board = np.zeros((count_of_row, count_of_column))
     return game_board
  
+
 # droping a piece down
 def drop_piece_down(game_board, row, col, piece):
     game_board[row][col] = piece
  
+
 # checking if location is valid
 def is_valid_location(game_board, col):
     return game_board[count_of_row-1][col] == 0
  
+
 # checking for next open row
 def check_next_open_row(game_board, col):
     for r in range(count_of_row):
         if game_board[r][col] == 0:
             return r
  
+
 # printing the game board
 def print_game_board(game_board):
     print(np.flip(game_board, 0))
  
+
 # checking if the move is winning move
 def make_winning_move(game_board, piece):
     
@@ -86,9 +96,9 @@ is_game_over = False
 turn = 0
 
 
-
 # reseting the game once over
 def reset_game():
+
     game_board = create_board_for_game()
     print_game_board(game_board)
     is_game_over = False
@@ -102,8 +112,10 @@ def reset_game():
     width = count_of_column * square_size
     height = (count_of_row+1) * square_size
     
+    # setting window size
     size = (width, height)
     
+    # setting the radius of the sqaures
     radius = int(square_size/2 - 5)
     
     screen = pygame.display.set_mode(size)
@@ -116,6 +128,7 @@ def reset_game():
     my_game_font = pygame.font.SysFont("Comic Sans MS", 75)
     
     while not is_game_over:
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -171,6 +184,7 @@ def reset_game():
                     pygame.time.wait(3000)
                     reset_game()
 
+
 # initalizing pygame module
 pygame.init()
  
@@ -179,8 +193,10 @@ square_size = 100
 width = count_of_column * square_size
 height = (count_of_row+1) * square_size
 
+# setting window size
 size = (width, height)
 
+# setting the radius of the sqaures
 radius = int(square_size/2 - 5)
 
 screen = pygame.display.set_mode(size)
@@ -247,6 +263,3 @@ while not is_game_over:
             if is_game_over:
                 pygame.time.wait(3000)
                 reset_game()
-
-
-

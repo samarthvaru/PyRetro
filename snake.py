@@ -7,6 +7,7 @@ delay = 0.1
 
 segments = []
 
+
 # variables for storing scores
 score = 0
 high_score = 0
@@ -61,15 +62,18 @@ def go_up():
 	if snake_head.direction != "down":
 		snake_head.direction = "up"
 
+
 # assigning downward movement for snake
 def go_down():
 	if snake_head.direction != "up":
 		snake_head.direction = "down"
 
+
 # assigning left movement for snake
 def go_left():
 	if snake_head.direction != "right":
 		snake_head.direction = "left"
+
 
 # assigning right movement for snake
 def go_right():
@@ -77,6 +81,7 @@ def go_right():
 		snake_head.direction = "right"
 
 
+# moving snake
 def move():
 	
     # moving snake in upward direction
@@ -99,8 +104,10 @@ def move():
 		x = snake_head.xcor()
 		snake_head.setx(x+speed)
 
+
 # adding the keypress listener for snake movement
 window.listen()
+
 window.onkeypress(go_up, "w")
 window.onkeypress(go_up, "Up")
 
@@ -127,6 +134,7 @@ while True:
 		snake_head.direction = "Stop"
 		food_colors = random.choice(['red', 'blue', 'green'])
 		food_shapes = random.choice(['square', 'circle'])
+		
 		for segment in segments:
 			segment.goto(1000, 1000)
 		segments.clear()
@@ -135,7 +143,8 @@ while True:
 		scr_wrtr.clear()
 		scr_wrtr.write("Score : {} High Score : {} ".format(
 			score, high_score), align="center", font=("Comic Sans MS", 24, "bold"))
-		
+
+
     # randomizing the position of food if eaten by the snake
 	if snake_head.distance(food) < speed:
 		x = random.randint(-270, 270)
@@ -151,21 +160,25 @@ while True:
 		segments.append(new_segment)
 		delay -= 0.001
 		score += 10
+		
 		if score > high_score:
 			high_score = score
 		scr_wrtr.clear()
 		scr_wrtr.write("Score : {} High Score : {} ".format(
 			score, high_score), align="center", font=("Comic Sans MS", 24, "bold"))
-		
+
+
 	# Checking for head collisions with body segments
 	for index in range(len(segments)-1, 0, -1):
 		x = segments[index-1].xcor()
 		y = segments[index-1].ycor()
 		segments[index].goto(x, y)
+	
 	if len(segments) > 0:
 		x = snake_head.xcor()
 		y = snake_head.ycor()
 		segments[0].goto(x, y)
+	
 	move()
 	for segment in segments:
 		if segment.distance(snake_head) < speed:
@@ -176,6 +189,7 @@ while True:
 			snake_head.direction = "stop"
 			food_colors = random.choice(['red', 'blue', 'green'])
 			food_shapes = random.choice(['square', 'circle'])
+	
 			for segment in segments:
 				segment.goto(1000, 1000)
 			segment.clear()

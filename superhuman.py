@@ -24,6 +24,7 @@ sealevel_image = 'images/base.jfif'
 
 
 def superhuman():
+	
 	# defining variables
 	player_score = 0
 	horizontal = int(game_window_width/5)
@@ -65,26 +66,32 @@ def superhuman():
 
 	while True:
 		for event in pygame.event.get():
+			
 			if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
 				pygame.quit()
 				sys.exit()
+			
 			if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
 				if vertical > 0:
 					superhuman_velocity_y = superhuman_flap_velocity
 					superhuman_flapped = True
 
+		
 		# function to check if superhuman crashes onto a wall
 		is_game_over = isGameOver(horizontal,
 							vertical,
 							up_walls,
 							down_walls)
+		
 		if is_game_over:
 			return
 
 		# checking player's score
 		playerMidPos = horizontal + game_images['superhuman'].get_width()/2
+		
 		for wall in up_walls:
 			wallMidPos = wall['x'] + game_images['wall_image'][0].get_width()/2
+		
 			if wallMidPos <= playerMidPos < wallMidPos + 4:
 				player_score += 1
 				print(f"Your score is {player_score}")
@@ -94,6 +101,7 @@ def superhuman():
 
 		if superhuman_flapped:
 			superhuman_flapped = False
+		
 		playerHeight = game_images['superhuman'].get_height()
 		vertical = vertical + \
 			min(superhuman_velocity_y, elevation - vertical - playerHeight)
@@ -116,6 +124,7 @@ def superhuman():
 
 		# loading game images
 		window.blit(game_images['background'], (0, 0))
+		
 		for upper_wall, lower_wall in zip(up_walls, down_walls):
 			window.blit(game_images['wall_image'][0],
 						(upper_wall['x'], upper_wall['y']))
@@ -145,23 +154,27 @@ def superhuman():
 		framepersecond_clock.tick(frame_per_second)
 
 
+# function for checking if game is over
 def isGameOver(horizontal, vertical, up_walls, down_walls):
+	
 	if vertical > elevation - 25 or vertical < 0:
 		return True
 
 	for wall in up_walls:
 		wall_height = game_images['wall_image'][0].get_height()
+		
 		if(vertical < wall_height + wall['y'] and\
 		abs(horizontal - wall['x']) < game_images['wall_image'][0].get_width()):
 			return True
 
 	for wall in down_walls:
+		
 		if (vertical + game_images['superhuman'].get_height() > wall['y']) and\
 		abs(horizontal - wall['x']) < game_images['wall_image'][0].get_width():
 			return True
 	return False
 
-
+# function for creating a wall
 def create_wall():
 	offset = game_window_height/3
 	wall_height = game_images['wall_image'][0].get_height()
@@ -215,9 +228,13 @@ if __name__ == "__main__":
 		wall_image).convert_alpha(), 180), pygame.image.load(
 	wall_image).convert_alpha())
 
+
+	# printing welcome message
 	print("WELCOME TO THE Py-Retro: Super Human")
 	print("Press space or enter to start the game")
 
+
+	# infinte loop
 	while True:
 
 		# setting the coordinates of superhuman
@@ -226,6 +243,7 @@ if __name__ == "__main__":
 		vertical = int(
 			(game_window_height - game_images['superhuman'].get_height())/2)
 		ground = 0
+		
 		while True:
 			for event in pygame.event.get():
 
