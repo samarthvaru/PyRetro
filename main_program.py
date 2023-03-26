@@ -12,8 +12,8 @@ bg = PhotoImage(file = "images/template.png")
 label1 = Label( window, image = bg)
 label1.place(x = 0, y = 0)
 
-width = 800 # Width 
-height = 800 # Height
+width = 600 # Width 
+height = 600 # Height
  
 screen_width = window.winfo_screenwidth()  # Width of the screen
 screen_height = window.winfo_screenheight() # Height of the screen
